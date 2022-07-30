@@ -1,4 +1,6 @@
-# Unit 9 Homework: Employee Database
+# SQL Homework: Employee Database
+
+![](images/sql.png) 
 
 ## Background
 

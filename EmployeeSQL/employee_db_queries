@@ -1,0 +1,77 @@
+SELECT * FROM salaries;
+SELECT * FROM titles;
+SELECT * FROM dept_emp;
+SELECT * FROM employees;
+SELECT * FROM departments;
+SELECT * FROM dept_manager;
+
+--Q1. List the following details of each employee: employee number, last name, first name, sex, and salary.
+select em.emp_no, last_name, first_name, sex, salary
+from employees as em
+inner join salaries as sal
+on em.emp_no = sal.emp_no;
+
+--Q2. List first name, last name, and hire date for employees who were hired in 1986.
+select first_name, last_name, hire_date
+from employees
+where hire_date between '1/1/1986'and '31/12/1986'
+order by hire_date;
+
+--Q3.List the manager of each department with the following information: department number, department name, the manager's employee number, last name, first name. 
+select depman.dept_no, dept_name, depman.emp_no, last_name, first_name
+from departments
+join dept_manager as depman
+on departments.dept_no = depman.dept_no
+join employees
+on depman.emp_no = employees.emp_no;
+
+--Q4. List the department of each employee with the following information: employee number, last name, first name, and department name.
+select em.emp_no, last_name, first_name, dept_name
+from employees as em
+join dept_emp
+on em.emp_no = dept_emp.emp_no
+join departments as depart
+on depart.dept_no = dept_emp.dept_no;
+
+--Q5. List first name, last name, and sex for employees whose first name is "Hercules" and last names begin with "B."
+select first_name, last_name, sex
+from employees
+where first_name ='Hercules'
+and last_name like 'B%';
+
+--Q6. List all employees in the Sales department, including their employee number, last name, first name, and department name.
+select em.emp_no, last_name, first_name, dept_name
+from employees as em
+   join dept_emp as deptemp
+   on em.emp_no = deptemp.emp_no
+       join departments as depart
+       on deptemp.dept_no = depart.dept_no
+       where dept_name = 'Sales';
+
+--Q7. List all employees in the Sales and Development departments, including their employee number, last name, first name, and department name.
+select em.emp_no, last_name, first_name, dept_name
+from employees as em
+join dept_emp
+on em.emp_no = dept_emp.emp_no
+join departments
+on departments.dept_no = dept_emp.dept_no
+where dept_name = 'Sales' or dept_name = 'Development';
+
+--Q8. List the frequency count of employee last names (i.e., how many employees share each last name) in descending order.
+select last_name,
+count(last_name)as frequent_last_name
+from employees
+group by last_name 
+order by frequent_last_name desc;
+
+---Bonus
+---1) Create a histogram to visualize the most common salary ranges for employees.
+select * from salaries
+
+---2)Create a bar chart of average salary by title.
+select title, salary
+from employees
+inner join salaries
+on employees.emp_no = salaries.emp_no
+inner join titles
+on titles.title_id = employees.emp_title_id;
